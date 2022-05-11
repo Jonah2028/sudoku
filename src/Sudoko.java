@@ -64,27 +64,35 @@ public class Sudoko extends PlainDocument implements ActionListener {
         frame.setVisible(true);
         JOptionPane.showMessageDialog(alert,"To play first click a button with a number on it, the button will be turned teal,that will determine which number will be place in the 9x9 grid above. When you want to place a different number on the board click the button with the number on it. At any time you can place a different number on a square that has a number on it, on the board by clicking on it again","How to Play",JOptionPane.WARNING_MESSAGE);
     }
-    public void winCheck(){
-        for (int row = 0; row < grid2.length; row++) {
-            for (int collum = 0; collum < grid2.length; collum++) {
-                grid2[collum][row]=int.(grid[collum][row])
-            }
-        }
-        int collum1 = 0;
-        for (int c = 0; c < 9; c++) {
-            collum1=grid2[c][0];
-        }
+//runs when the check button is clicked and checks to see if the player won. check collum, row and 3x3 grids
+    public void winCheck() {
+        //checking collums
+        int collums[] = new int[9];
+        int finalCollums = 0;
+        for (int i = 0; i <9; i++) {
+            int c = 0;
+            for (int collum = 0; collum < 9; collum++) {
+                c = c + grid2[0][collum];}
+            collums[i]=c;}
+        for (int i = 0; i < 9; i++) {finalCollums=finalCollums+collums[i];}
+        System.out.println("final count for collum: "+finalCollums);
+        //checking rows
+        int rows[] = new int[9];
+        int finalrows = 0;
+        for (int i = 0; i <9; i++) {
+            int c = 0;
+            for (int row = 0; row < 9; row++) {
+                c = c + grid2[row][0];}
+            rows[i]=c;}
+        for (int i = 0; i < 9; i++) {finalrows=finalrows+rows[i];}
+        System.out.println("final count for row: "+finalrows);
     }
 // make an array for the numbers in the field and check that with code below
     @Override
     public void actionPerformed(ActionEvent e) {
-        //testing stuff
-        if (e.getSource()==check) {
-            for (int row = 0; row < grid.length; row++) {
-                for (int collum = 0; collum < grid[0].length; collum++) {
-                    String test = grid[collum][row].getText();
-                    if (!grid[collum][row].getText().isEmpty()) {
-                        System.out.print(test+", ");}}}}
+        //runs wincheck method when check is clicked
+        if (e.getSource()==check) {winCheck();}
+        //puts numbers on buttons in the 9x9 grid and sets current number being placed to cyan
         if (e.getSource()==numbers[0][0]){
             set=1;
             for (int row = 0; row < numbers.length; row++) {
@@ -143,6 +151,7 @@ public class Sudoko extends PlainDocument implements ActionListener {
             for (int collum = 0; collum < grid[0].length; collum++) {
                 if (e.getSource().equals(grid[collum][row])){
                     grid[collum][row].setText(String.valueOf(set));
+                    grid2[collum][row]=set;
                 }
             }}
     }
