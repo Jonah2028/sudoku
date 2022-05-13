@@ -69,23 +69,49 @@ public class Sudoko extends PlainDocument implements ActionListener {
         //checking collums
         int collums[] = new int[9];
         int finalCollums = 0;
-        for (int i = 0; i <9; i++) {
+        for (int i = 0; i < 9; i++) {
             int c = 0;
             for (int collum = 0; collum < 9; collum++) {
-                c = c + grid2[0][collum];}
-            collums[i]=c;}
-        for (int i = 0; i < 9; i++) {finalCollums=finalCollums+collums[i];}
-        System.out.println("final count for collum: "+finalCollums);
+                c = c + grid2[i][collum];
+            }
+            collums[i] = c;
+        }
+        for (int i = 0; i < 9; i++) {
+            finalCollums = finalCollums + collums[i];
+        }
+        System.out.println("final count for collum: " + finalCollums);
         //checking rows
         int rows[] = new int[9];
         int finalrows = 0;
-        for (int i = 0; i <9; i++) {
+        for (int i = 0; i < 9; i++) {
             int c = 0;
             for (int row = 0; row < 9; row++) {
-                c = c + grid2[row][0];}
-            rows[i]=c;}
-        for (int i = 0; i < 9; i++) {finalrows=finalrows+rows[i];}
-        System.out.println("final count for row: "+finalrows);
+                c = c + grid2[row][i];
+            }
+            rows[i] = c;
+        }
+        for (int i = 0; i < 9; i++) {
+            finalrows = finalrows + rows[i];
+        }
+        System.out.println("final count for row: " + finalrows);
+        //checking 3x3
+        int cell[][] = new int[3][3];
+        int finalcell = 0;
+        for (int collum = 0; collum < cell.length; collum++) {
+            int c = 0;
+            for (int row = 0; row < cell[0].length; row++) {
+                c = c + grid2[row][collum];
+                cell[row][collum] = c;
+            }
+        }
+        for (int collum = 0; collum < cell.length; collum++) {
+            for (int row = 0; row < cell[0].length; row++) {
+                finalcell = finalcell + cell[row][collum];
+                System.out.println("final count for cell: " + finalcell + " " +row+","+collum);
+            }
+
+        }
+
     }
 // make an array for the numbers in the field and check that with code below
     @Override
