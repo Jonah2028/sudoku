@@ -88,30 +88,30 @@ public class Sudoko extends PlainDocument implements ActionListener {
             for (int row = 0; row < 9; row++) {
                 c = c + grid2[row][i];
             }
-            rows[i] = c;
+            rows[i]=c;
         }
         for (int i = 0; i < 9; i++) {
             finalrows = finalrows + rows[i];
         }
         System.out.println("final count for row: " + finalrows);
-        //checking 3x3
-        int cell[][] = new int[3][3];
-        int finalcell = 0;
-        for (int collum = 0; collum < cell.length; collum++) {
+        //checking 3x3 grids
+        int num = 1;
+            int cell[][] = new int[9][9];
+        int adding=0;
+        for (int checking = 0; checking < 9; checking++) {
+            int finalcell = 0;
             int c = 0;
-            for (int row = 0; row < cell[0].length; row++) {
-                c = c + grid2[row][collum];
-                cell[row][collum] = c;
-            }
+            for (int collum = 0; collum < cell.length; collum++) {
+                for (int row = 0; row < cell[0].length; row++) {
+                    c = c + grid2[row+adding][collum+adding];
+                    cell[row][collum] = c;
+                }}
+            finalcell = finalcell + c;
+            System.out.println("final count for cell " + num + ": " + finalcell);
+            num++;
+            //adding cant be higher then ine
+            adding=adding+3;
         }
-        for (int collum = 0; collum < cell.length; collum++) {
-            for (int row = 0; row < cell[0].length; row++) {
-                finalcell = finalcell + cell[row][collum];
-                System.out.println("final count for cell: " + finalcell + " " +row+","+collum);
-            }
-
-        }
-
     }
 // make an array for the numbers in the field and check that with code below
     @Override
