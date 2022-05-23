@@ -20,6 +20,7 @@ public class Sudoko extends PlainDocument implements ActionListener {
     JButton check = new JButton("Check");
     JLabel winCount = new JLabel("Wins: " + wins);
     JOptionPane alert = new JOptionPane();
+    JOptionPane winMessage = new JOptionPane();
     Container board = new Container();
     Container winBox = new Container();
     Container click = new Container();
@@ -53,6 +54,15 @@ public class Sudoko extends PlainDocument implements ActionListener {
                 click.add(numbers[collum][row]);
             }
         }
+        //testing grid shit
+      /*  int test[][]= new int[9][9];
+        for (int collum = 0; collum < test.length; collum=collum+6) {
+            for (int row = 0; row < test[0].length; row++) {
+
+                for (int collum2 = collum; collum2 < test.length; collum2++) {
+                    for (int row2 = row; row2 < test[0].length; row2++) {
+                        grid[collum2][row2].setBackground(Color.GRAY);
+                    }}}}*/
         check.addActionListener(this);
         reset.addActionListener(this);
         winBox.setLayout(new GridLayout(1, 1));
@@ -67,9 +77,9 @@ public class Sudoko extends PlainDocument implements ActionListener {
         frame.setVisible(true);
         JOptionPane.showMessageDialog(alert, "To play first click a button with a number on it, the button will be turned teal,that will determine which number will be place in the 9x9 grid above. When you want to place a different number on the board click the button with the number on it. At any time you can place a different number on a square that has a number on it, on the board by clicking on it again", "How to Play", JOptionPane.WARNING_MESSAGE);
     }
-
     //runs when the check button is clicked and checks to see if the player won. check collum, row and 3x3 grids
     public void winCheck() {
+        int winner=0;
         //checking collums
         int collums[] = new int[9];
         int finalCollums = 0;
@@ -103,15 +113,13 @@ public class Sudoko extends PlainDocument implements ActionListener {
         int num = 1;
         for (int collumCheck = 0; collumCheck < grid2.length; collumCheck=collumCheck+3) {
             for (int rowCheck = 0; rowCheck < grid2[0].length; rowCheck=rowCheck+3) {
-
         int cell[][] = new int[9][9];
         int finalcell = 0;
         int c = 0;
             for (int collum = collumCheck; collum < cell.length; collum++) {
                 for (int row = rowCheck; row < cell[0].length; row++) {
-                    c = c + grid2[row][collum];
-                    cell[row][collum] = c;
-                    //System.out.println((row)+","+(collum));
+                        c = c + grid2[row][collum];
+                        cell[row][collum] = c;
                 }
             }
             finalcell = finalcell + c;
@@ -121,6 +129,10 @@ public class Sudoko extends PlainDocument implements ActionListener {
             num++;
             }
         }
+        if(winner!=0){
+            wins++;
+            JOptionPane.showMessageDialog(winMessage,"You win!!","Win mesage",JOptionPane.PLAIN_MESSAGE);
+        }
     }
     public void reseter(){
         for (int collum = 0; collum < grid.length; collum++) {
@@ -129,7 +141,13 @@ public class Sudoko extends PlainDocument implements ActionListener {
                 grid2[collum][row]=0;
             }
         }
+        set=1;
+        for (int row = 0; row < numbers.length; row++) {
+            for (int collum = 0; collum < numbers[0].length; collum++) {
+                numbers[collum][row].setBackground(null);}}
+        numbers[0][0].setBackground(Color.CYAN);
     }
+
 // make an array for the numbers in the field and check that with code below
     @Override
     public void actionPerformed(ActionEvent e) {
