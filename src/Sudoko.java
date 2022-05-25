@@ -40,9 +40,7 @@ public class Sudoko extends PlainDocument implements ActionListener {
             for (int collum = 0; collum < grid[0].length; collum++) {
                 grid[collum][row] = new JButton();
                 grid[collum][row].addActionListener(this);
-                board.add(grid[collum][row]);
-            }
-        }
+                board.add(grid[collum][row]);}}
         //creates the number buttons
         click.setLayout(new GridLayout(1, 9));
         for (int row = 0; row < numbers.length; row++) {
@@ -51,18 +49,19 @@ public class Sudoko extends PlainDocument implements ActionListener {
                 adsa++;
                 numbers[collum][row].addActionListener(this);
                 numbers[0][0].setBackground(Color.CYAN);
-                click.add(numbers[collum][row]);
-            }
-        }
-        //testing grid shit
-      /*  int test[][]= new int[9][9];
-        for (int collum = 0; collum < test.length; collum=collum+6) {
-            for (int row = 0; row < test[0].length; row++) {
-
+                click.add(numbers[collum][row]);}}
+        //changes the odd number grids to grey
+        for (int collum = 0; collum < grid2.length; collum=collum+6) {
+            for (int row = 0; row < grid2[0].length; row=row+6) {
+                int test[][]=new int[3+collum][3+row];
                 for (int collum2 = collum; collum2 < test.length; collum2++) {
                     for (int row2 = row; row2 < test[0].length; row2++) {
-                        grid[collum2][row2].setBackground(Color.GRAY);
-                    }}}}*/
+                        grid[collum2][row2].setBackground(Color.GRAY);}}}}
+        int test2[][]=new int[6][6];
+        for (int collum = 3; collum < test2.length ; collum++) {
+            for (int row = 3; row < test2[0].length; row++) {
+                grid[collum][row].setBackground(Color.GRAY);}}
+        //makes the board
         check.addActionListener(this);
         reset.addActionListener(this);
         winBox.setLayout(new GridLayout(1, 1));
@@ -79,59 +78,79 @@ public class Sudoko extends PlainDocument implements ActionListener {
     }
     //runs when the check button is clicked and checks to see if the player won. check collum, row and 3x3 grids
     public void winCheck() {
-        int winner=0;
         //checking collums
+        int numCollum=0;
+        int collumWin = 0;
         int collums[] = new int[9];
-        int finalCollums = 0;
         for (int i = 0; i < 9; i++) {
             int c = 0;
+            int finalCollums = 0;
             for (int collum = 0; collum < 9; collum++) {
                 c = c + grid2[i][collum];
             }
-            collums[i] = c;
+            finalCollums = c;
+            if (finalCollums!=0) {
+                System.out.println("final count for collum" + numCollum + ": " + finalCollums);
+            }
+            numCollum++;
         }
-        for (int i = 0; i < 9; i++) {
-            finalCollums = finalCollums + collums[i];
-        }
-        System.out.println("final count for collum: " + finalCollums);
-        //checking rows
+        for (int collumCheck = 0; collumCheck < 9; collumCheck++) {
+            if (collums[collumCheck] == 45) {collumWin++;}}
+
+        //checking rows'
+        int numRows=1;
+        int rowWin = 0;
         int rows[] = new int[9];
-        int finalrows = 0;
         for (int i = 0; i < 9; i++) {
+            int finalrows = 0;
             int c = 0;
             for (int row = 0; row < 9; row++) {
                 c = c + grid2[row][i];
             }
-            rows[i] = c;
+            finalrows = c;
+            if (finalrows!=0) {
+                System.out.println("final count for row" + numRows + ": " + finalrows);
+            }
+            numRows++;
         }
-        for (int i = 0; i < 9; i++) {
-            finalrows = finalrows + rows[i];
-        }
-        System.out.println("final count for row: " + finalrows);
+        for (int rowCheck = 0; rowCheck < 9; rowCheck++) {
+            if (rows[rowCheck] == 45) {rowCheck++;}}
+
         //checking 3x3 grids
         //make the checker check all 3 grids in the first row then move down and repeat
-        int num = 1;
-        for (int collumCheck = 0; collumCheck < grid2.length; collumCheck=collumCheck+3) {
-            for (int rowCheck = 0; rowCheck < grid2[0].length; rowCheck=rowCheck+3) {
-        int cell[][] = new int[9][9];
-        int finalcell = 0;
-        int c = 0;
-            for (int collum = collumCheck; collum < cell.length; collum++) {
-                for (int row = rowCheck; row < cell[0].length; row++) {
+        //it checks row by row and checks all the grids in one collom and adds that to a total when
+        //it moves down a row it stops counting the row above but counts the row below it
+        int numcell = 1;
+        int cellcount[][] = new int[3][3];
+        int cellWin = 0;
+        for (int collumCheck = 0; collumCheck < grid2.length; collumCheck = collumCheck + 3) {
+            for (int rowCheck = 0; rowCheck < grid2[0].length; rowCheck = rowCheck + 3) {
+                int cell[][] = new int[3 + collumCheck][3 + rowCheck];
+                int finalcell = 0;
+                int c = 0;
+                for (int collum = collumCheck; collum < cell.length; collum++) {
+                    for (int row = rowCheck; row < cell[0].length; row++) {
                         c = c + grid2[row][collum];
-                        cell[row][collum] = c;
+
+                    }
                 }
-            }
-            finalcell = finalcell + c;
-            if (finalcell!=0) {
-                System.out.println("final count for cell " + num + ": " + finalcell);
-            }
-            num++;
+                finalcell = finalcell + c;
+                if (finalcell != 0) {
+                    System.out.println("final count for cell " + numcell + ": " + finalcell);
+                }
+                numcell++;
             }
         }
-        if(winner!=0){
+        for (int collumCheck = 0; collumCheck < cellcount.length; collumCheck++) {
+            for (int rowCheck = 0; rowCheck < cellcount[0].length; rowCheck++) {
+                if (cellcount[rowCheck][collumCheck] == 45) {
+                    cellWin++;
+                }
+            }
+        }
+        if (collumWin == 9 && rowWin == 9) {
             wins++;
-            JOptionPane.showMessageDialog(winMessage,"You win!!","Win mesage",JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(winMessage, "You win!!", "Win mesage", JOptionPane.PLAIN_MESSAGE);
         }
     }
     public void reseter(){
