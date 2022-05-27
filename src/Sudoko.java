@@ -18,6 +18,8 @@ public class Sudoko extends PlainDocument implements ActionListener {
     int grid2[][] = new int[9][9];
     JButton numbers[][] = new JButton[3][3];
     JButton check = new JButton("Check");
+    JButton rules = new JButton("How to play");
+    JTextField instructions = new JTextField();
     JLabel winCount = new JLabel("Wins: " + wins);
     JOptionPane alert = new JOptionPane();
     JOptionPane winMessage = new JOptionPane();
@@ -25,6 +27,7 @@ public class Sudoko extends PlainDocument implements ActionListener {
     Container winBox = new Container();
     Container click = new Container();
     Container bottom = new Container();
+    Container bottom2 = new Container();
 
     public static void main(String[] args) {
         new Sudoko();
@@ -50,26 +53,19 @@ public class Sudoko extends PlainDocument implements ActionListener {
                 numbers[collum][row].addActionListener(this);
                 numbers[0][0].setBackground(Color.CYAN);
                 click.add(numbers[collum][row]);}}
-        //changes the odd number grids to grey
-        for (int collum = 0; collum < grid2.length; collum=collum+6) {
-            for (int row = 0; row < grid2[0].length; row=row+6) {
-                int test[][]=new int[3+collum][3+row];
-                for (int collum2 = collum; collum2 < test.length; collum2++) {
-                    for (int row2 = row; row2 < test[0].length; row2++) {
-                        grid[collum2][row2].setBackground(Color.GRAY);}}}}
-        int test2[][]=new int[6][6];
-        for (int collum = 3; collum < test2.length ; collum++) {
-            for (int row = 3; row < test2[0].length; row++) {
-                grid[collum][row].setBackground(Color.GRAY);}}
+        greyer();
         //makes the board
         check.addActionListener(this);
         reset.addActionListener(this);
+        rules.addActionListener(this);
         winBox.setLayout(new GridLayout(1, 1));
         winBox.add(winCount);
-        bottom.setLayout(new BorderLayout());
-        bottom.add(click, BorderLayout.NORTH);
-        bottom.add(check, BorderLayout.CENTER);
-        bottom.add(reset, BorderLayout.SOUTH);
+        bottom.setLayout(new GridLayout(4,1));
+        //need to get the rules button under click
+        bottom.add(click);
+        bottom.add(rules);
+        bottom.add(check);
+        bottom.add(reset);
         frame.add(winBox, BorderLayout.NORTH);
         frame.add(board, BorderLayout.CENTER);
         frame.add(bottom, BorderLayout.SOUTH);
@@ -97,7 +93,7 @@ public class Sudoko extends PlainDocument implements ActionListener {
         for (int collumCheck = 0; collumCheck < 9; collumCheck++) {
             if (collums[collumCheck] == 45) {collumWin++;}}
 
-        //checking rows'
+        //checking rows
         int numRows=1;
         int rowWin = 0;
         int rows[] = new int[9];
@@ -166,7 +162,32 @@ public class Sudoko extends PlainDocument implements ActionListener {
                 numbers[collum][row].setBackground(null);}}
         numbers[0][0].setBackground(Color.CYAN);
     }
-
+    //when a number is clicked highlights all the cells with that number cyan
+    public void highlighter(){
+        for (int collum = 0; collum < grid.length; collum++) {
+            for (int row = 0; row < grid[0].length; row++) {
+                grid[collum][row].setBackground(null);}}
+        greyer();
+        for (int collum = 0; collum < grid.length; collum++) {
+            for (int row = 0; row < grid[0].length; row++) {
+                if (grid2[collum][row]==set){grid[collum][row].setBackground(Color.CYAN);}
+            }}
+    }
+    //changes the odd number grids to grey
+    public void greyer() {
+        for (int collum = 0; collum < grid2.length; collum = collum + 6) {
+            for (int row = 0; row < grid2[0].length; row = row + 6) {
+                int test[][] = new int[3 + collum][3 + row];
+                for (int collum2 = collum; collum2 < test.length; collum2++) {
+                    for (int row2 = row; row2 < test[0].length; row2++) {
+                        grid[collum2][row2].setBackground(Color.GRAY);
+                    }}}}
+        int test2[][] = new int[6][6];
+        for (int collum = 3; collum < test2.length; collum++) {
+            for (int row = 3; row < test2[0].length; row++) {
+                grid[collum][row].setBackground(Color.GRAY);
+            }}
+    }
 // make an array for the numbers in the field and check that with code below
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -177,54 +198,63 @@ public class Sudoko extends PlainDocument implements ActionListener {
         //sets the set int and sets current number being placed to cyan
         if (e.getSource()==numbers[0][0]){
             set=1;
+            highlighter();
             for (int row = 0; row < numbers.length; row++) {
                 for (int collum = 0; collum < numbers[0].length; collum++) {
                     numbers[collum][row].setBackground(null);}}
             numbers[0][0].setBackground(Color.CYAN);}
         if (e.getSource()==numbers[1][0]){
             set=2;
+            highlighter();
             for (int row = 0; row < numbers.length; row++) {
                 for (int collum = 0; collum < numbers[0].length; collum++) {
                     numbers[collum][row].setBackground(null);}}
             numbers[1][0].setBackground(Color.CYAN);}
         if (e.getSource()==numbers[2][0]){
             set=3;
+            highlighter();
             for (int row = 0; row < numbers.length; row++) {
                 for (int collum = 0; collum < numbers[0].length; collum++) {
                     numbers[collum][row].setBackground(null);}}
             numbers[2][0].setBackground(Color.CYAN);}
         if (e.getSource()==numbers[0][1]){
             set=4;
+            highlighter();
             for (int row = 0; row < numbers.length; row++) {
                 for (int collum = 0; collum < numbers[0].length; collum++) {
                     numbers[collum][row].setBackground(null);}}
             numbers[0][1].setBackground(Color.CYAN);}
         if (e.getSource()==numbers[1][1]){
             set=5;
+            highlighter();
             for (int row = 0; row < numbers.length; row++) {
                 for (int collum = 0; collum < numbers[0].length; collum++) {
                     numbers[collum][row].setBackground(null);}}
             numbers[1][1].setBackground(Color.CYAN);}
         if (e.getSource()==numbers[2][1]){
             set=6;
+            highlighter();
             for (int row = 0; row < numbers.length; row++) {
                 for (int collum = 0; collum < numbers[0].length; collum++) {
                     numbers[collum][row].setBackground(null);}}
             numbers[2][1].setBackground(Color.CYAN);}
         if (e.getSource()==numbers[0][2]){
             set=7;
+            highlighter();
             for (int row = 0; row < numbers.length; row++) {
                 for (int collum = 0; collum < numbers[0].length; collum++) {
                     numbers[collum][row].setBackground(null);}}
             numbers[0][2].setBackground(Color.CYAN);}
         if (e.getSource()==numbers[1][2]){
             set=8;
+            highlighter();
             for (int row = 0; row < numbers.length; row++) {
                 for (int collum = 0; collum < numbers[0].length; collum++) {
                     numbers[collum][row].setBackground(null);}}
             numbers[1][2].setBackground(Color.CYAN);}
         if (e.getSource()==numbers[2][2]){
             set=9;
+            highlighter();
             for (int row = 0; row < numbers.length; row++) {
                 for (int collum = 0; collum < numbers[0].length; collum++) {
                     numbers[collum][row].setBackground(null);}}
