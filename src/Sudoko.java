@@ -12,22 +12,24 @@ public class Sudoko extends PlainDocument implements ActionListener {
     int wins = 0;
     int adsa = 1;
     int set = 1;
-    JFrame frame = new JFrame("Sudoko");
-    JButton reset = new JButton("reset");
+    JFrame frame = new JFrame("Sudoko™");
+    JFrame howToPlay = new JFrame("How to play");
+    JButton reset = new JButton("Reset");
     JButton grid[][] = new JButton[9][9];
     int grid2[][] = new int[9][9];
     JButton numbers[][] = new JButton[3][3];
     JButton check = new JButton("Check");
     JButton rules = new JButton("How to play");
-    JTextField instructions = new JTextField();
+    JTextArea instructions = new JTextArea();
+    JTextArea whatIsSudoko = new JTextArea();
+    JButton tester = new JButton("hmmmm");
     JLabel winCount = new JLabel("Wins: " + wins);
-    JOptionPane alert = new JOptionPane();
     JOptionPane winMessage = new JOptionPane();
     Container board = new Container();
     Container winBox = new Container();
     Container click = new Container();
     Container bottom = new Container();
-    Container bottom2 = new Container();
+
 
     public static void main(String[] args) {
         new Sudoko();
@@ -60,22 +62,22 @@ public class Sudoko extends PlainDocument implements ActionListener {
         rules.addActionListener(this);
         winBox.setLayout(new GridLayout(1, 1));
         winBox.add(winCount);
-        bottom.setLayout(new GridLayout(4,1));
+        bottom.setLayout(new GridLayout(5,1));
         //need to get the rules button under click
         bottom.add(click);
         bottom.add(rules);
         bottom.add(check);
         bottom.add(reset);
+        bottom.add(tester);
         frame.add(winBox, BorderLayout.NORTH);
         frame.add(board, BorderLayout.CENTER);
         frame.add(bottom, BorderLayout.SOUTH);
         frame.setVisible(true);
-        JOptionPane.showMessageDialog(alert, "To play first click a button with a number on it, the button will be turned teal,that will determine which number will be place in the 9x9 grid above. When you want to place a different number on the board click the button with the number on it. At any time you can place a different number on a square that has a number on it, on the board by clicking on it again", "How to Play", JOptionPane.WARNING_MESSAGE);
     }
     //runs when the check button is clicked and checks to see if the player won. check collum, row and 3x3 grids
     public void winCheck() {
         //checking collums
-        int numCollum=0;
+        int numCollum=1;
         int collumWin = 0;
         int collums[] = new int[9];
         for (int i = 0; i < 9; i++) {
@@ -86,7 +88,7 @@ public class Sudoko extends PlainDocument implements ActionListener {
             }
             finalCollums = c;
             if (finalCollums!=0) {
-                System.out.println("final count for collum" + numCollum + ": " + finalCollums);
+                System.out.println("final count for collum " + numCollum + ": " + finalCollums);
             }
             numCollum++;
         }
@@ -105,7 +107,7 @@ public class Sudoko extends PlainDocument implements ActionListener {
             }
             finalrows = c;
             if (finalrows!=0) {
-                System.out.println("final count for row" + numRows + ": " + finalrows);
+                System.out.println("final count for row " + numRows + ": " + finalrows);
             }
             numRows++;
         }
@@ -188,6 +190,42 @@ public class Sudoko extends PlainDocument implements ActionListener {
                 grid[collum][row].setBackground(Color.GRAY);
             }}
     }
+
+    public void instructions(){
+        howToPlay.setSize(400,400);
+        howToPlay.setLayout(new BorderLayout());
+        whatIsSudoko.setEditable(false);
+        whatIsSudoko.setText("A Sudoko™ board is a 9x9 grid made up of 9, 3x3 grids. The goal of the " +
+                "game is to fill each of the 3x3 grids with 1 through 9 and there can be no repeating numbers " +
+                "in a row and collum.\n");
+        whatIsSudoko.setFont(whatIsSudoko.getFont().deriveFont(18f));
+
+        whatIsSudoko.setLineWrap(true);
+        whatIsSudoko.setWrapStyleWord(true);
+        instructions.setText("How to play: To place a number onto the Sudoko board click on a square" +
+                ", the number that will be placed is highlighted below. To Change which number is " +
+                "placed simply just click on another number in the row of numbers below. It will become " +
+                "highlighted teal letting you know that number is selected. When you have completed the " +
+                "Sudoko click the Check button. When you want a new Sudoko puzzle simply click the" +
+                " Reset Button.");
+        instructions.setFont(instructions.getFont().deriveFont(18f));
+        instructions.setEditable(false);
+        instructions.setLineWrap(true);
+        instructions.setWrapStyleWord(true);
+        howToPlay.add(whatIsSudoko, BorderLayout.NORTH);
+        //howToPlay.add(space, BorderLayout.CENTER);
+        howToPlay.add(instructions, BorderLayout.CENTER);
+        howToPlay.setVisible(true);
+    }
+    public void testing(){
+        for (int collum = 0; collum < grid2.length; collum++) {
+            for (int row = 0; row < grid2[0].length; row++) {
+                if (grid2[row][collum]!=0){
+                    grid[row][collum].setEnabled(false);
+                }
+            }
+        }
+    }
 // make an array for the numbers in the field and check that with code below
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -265,4 +303,9 @@ public class Sudoko extends PlainDocument implements ActionListener {
                 if (e.getSource().equals(grid[collum][row])){
                     grid[collum][row].setText(String.valueOf(set));
                     grid2[collum][row]=set;
-                }}}}}
+                }}}
+        if (e.getSource()==rules){
+            instructions();}
+        if (e.getSource()==tester){testing();}
+    }
+}
