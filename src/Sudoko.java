@@ -15,8 +15,11 @@ public class Sudoko extends PlainDocument implements ActionListener {
     JFrame frame = new JFrame("Sudoko™");
     JFrame howToPlay = new JFrame("How to play");
     JButton reset = new JButton("Reset");
+    JButton canPlace = new JButton("where place??:)");
     JButton grid[][] = new JButton[9][9];
     int grid2[][] = new int[9][9];
+    int grid3[][] = new int[9][9];
+    int grid4[][] = new int[9][9];
     JButton numbers[][] = new JButton[3][3];
     JButton check = new JButton("Check");
     JButton rules = new JButton("How to play");
@@ -60,15 +63,18 @@ public class Sudoko extends PlainDocument implements ActionListener {
         check.addActionListener(this);
         reset.addActionListener(this);
         rules.addActionListener(this);
+        tester.addActionListener(this);
+        canPlace.addActionListener(this);
         winBox.setLayout(new GridLayout(1, 1));
         winBox.add(winCount);
-        bottom.setLayout(new GridLayout(5,1));
+        bottom.setLayout(new GridLayout(6,1));
         //need to get the rules button under click
         bottom.add(click);
         bottom.add(rules);
         bottom.add(check);
         bottom.add(reset);
         bottom.add(tester);
+        bottom.add(canPlace);
         frame.add(winBox, BorderLayout.NORTH);
         frame.add(board, BorderLayout.CENTER);
         frame.add(bottom, BorderLayout.SOUTH);
@@ -155,9 +161,14 @@ public class Sudoko extends PlainDocument implements ActionListener {
         for (int collum = 0; collum < grid.length; collum++) {
             for (int row = 0; row < grid[0].length; row++) {
                 grid[collum][row].setText(" ");
+                grid[collum][row].setBackground(null);
+                grid[collum][row].setEnabled(true);
                 grid2[collum][row]=0;
+                grid3[collum][row]=0;
             }
         }
+        greyer();
+
         set=1;
         for (int row = 0; row < numbers.length; row++) {
             for (int collum = 0; collum < numbers[0].length; collum++) {
@@ -189,6 +200,13 @@ public class Sudoko extends PlainDocument implements ActionListener {
             for (int row = 3; row < test2[0].length; row++) {
                 grid[collum][row].setBackground(Color.GRAY);
             }}
+        for (int collum = 0; collum < grid3.length; collum++) {
+            for (int row = 0; row < grid3[0].length; row++) {
+                if (grid3[collum][row]!=0){
+                    grid[collum][row].setBackground(Color.DARK_GRAY);
+                }
+            }
+        }
     }
 
     public void instructions(){
@@ -199,9 +217,9 @@ public class Sudoko extends PlainDocument implements ActionListener {
                 "game is to fill each of the 3x3 grids with 1 through 9 and there can be no repeating numbers " +
                 "in a row and collum.\n");
         whatIsSudoko.setFont(whatIsSudoko.getFont().deriveFont(18f));
-
         whatIsSudoko.setLineWrap(true);
         whatIsSudoko.setWrapStyleWord(true);
+
         instructions.setText("How to play: To place a number onto the Sudoko board click on a square" +
                 ", the number that will be placed is highlighted below. To Change which number is " +
                 "placed simply just click on another number in the row of numbers below. It will become " +
@@ -213,27 +231,35 @@ public class Sudoko extends PlainDocument implements ActionListener {
         instructions.setLineWrap(true);
         instructions.setWrapStyleWord(true);
         howToPlay.add(whatIsSudoko, BorderLayout.NORTH);
-        //howToPlay.add(space, BorderLayout.CENTER);
         howToPlay.add(instructions, BorderLayout.CENTER);
         howToPlay.setVisible(true);
     }
+    //testing making buttons become disabled if they have numbers in them when hmmmm is pressed
     public void testing(){
         for (int collum = 0; collum < grid2.length; collum++) {
             for (int row = 0; row < grid2[0].length; row++) {
                 if (grid2[row][collum]!=0){
                     grid[row][collum].setEnabled(false);
-                }
-            }
-        }
+                    grid[row][collum].setBackground(Color.DARK_GRAY);
+                    grid3[row][collum]=1;
+                }}}
+    }
+    public void interfer(){
+
     }
 // make an array for the numbers in the field and check that with code below
     @Override
     public void actionPerformed(ActionEvent e) {
         //runs wincheck method when check is clicked
         if (e.getSource()==check) {winCheck();}
-        //runs the reset methof when reset is clicked
+        //runs the reset method when reset is clicked
         if (e.getSource()==reset) {reseter();}
+        //runs how to play
+        if (e.getSource()==rules){instructions();}
+        //runs testing
+        if (e.getSource()==tester){testing();}
         //sets the set int and sets current number being placed to cyan
+        if (e.getSource()==canPlace){interfer();};
         if (e.getSource()==numbers[0][0]){
             set=1;
             highlighter();
@@ -304,8 +330,5 @@ public class Sudoko extends PlainDocument implements ActionListener {
                     grid[collum][row].setText(String.valueOf(set));
                     grid2[collum][row]=set;
                 }}}
-        if (e.getSource()==rules){
-            instructions();}
-        if (e.getSource()==tester){testing();}
     }
 }
